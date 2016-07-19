@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using JitterMagic;
 using Microsoft.Extensions.Caching.Memory;
-using SmartCache.Client.Certificates;
 using SmartCache.Client.Http;
 
 namespace SmartCache.Client
@@ -14,14 +12,11 @@ namespace SmartCache.Client
     /// <inheritdoc/>
     public class SmartCacheClient : ISmartCacheClient
     {
-        private readonly IClientCertificateProvider clientCertificateProvider;
-
         private readonly IHttpClientFactory httpClientFactory;
 
-        public SmartCacheClient(IHttpClientFactory httpClientFactory, IClientCertificateProvider clientCertificateProvider)
+        public SmartCacheClient(IHttpClientFactory httpClientFactory)
         {
             this.httpClientFactory = httpClientFactory;
-            this.clientCertificateProvider = clientCertificateProvider;
         }
 
         public async Task<T> GetAsync<T>(Uri uri, CancellationTokenSource cancellationTokenSource = null) where T : class
@@ -101,11 +96,7 @@ namespace SmartCache.Client
 
         private IHttpClient CreateHttpClient()
         {
-            var handler = new HttpClientHandler();
-
-            handler.ClientCertificates.AddRange(clientCertificateProvider.GetCertificates().ToArray());
-
-            return httpClientFactory.Create(handler);
+            return httpClientFactory.Create();
         }
     }
 }

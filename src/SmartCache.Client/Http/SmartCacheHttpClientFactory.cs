@@ -1,16 +1,26 @@
 ﻿using System.Net.Http;
+using System.Linq;
+using SmartCache.Client.Certificates;
 
 namespace SmartCache.Client.Http
 {
     public class SmartCacheHttpClientFactory : IHttpClientFactory
     {
-        public IHttpClient Create()
+        private readonly IClientCertificateProvider clientCertificateProvider;
+
+        public SmartCacheHttpClientFactory(IClientCertificateProvider clientCertificateProvider)
         {
-            return new SmartCacheHttpClient();
+            this.clientCertificateProvider = clientCertificateProvider;
         }
 
-        public IHttpClient Create(HttpClientHandler handler)
+        public IHttpClient Create()
         {
+            var handler = new HttpClientHandler();
+
+            var certificates = clientCertificateProvider.GetCertificates().ToArray();
+
+            handler.ClientCertificates.AddRange(certificates);
+
             return new SmartCacheHttpClient(handler);
         }
     }

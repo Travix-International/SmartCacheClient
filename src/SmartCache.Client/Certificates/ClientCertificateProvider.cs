@@ -21,7 +21,7 @@ namespace SmartCache.Client.Certificates
             {
                 if (!String.IsNullOrEmpty(certPath) && File.Exists(certPath))
                 {
-                    cachedCertificate = new X509Certificate2(File.ReadAllBytes(certPath), configuration["SmartCacheClient:ClientCertificateFilePath"]);
+                    cachedCertificate = new X509Certificate2(File.ReadAllBytes(certPath), configuration["SmartCacheClient:ClientCertificatePassword"]);
 
                     logger.LogInformation("Certificate processed successfully");
                     logger.LogInformation($"Subject: {cachedCertificate.Subject}");
