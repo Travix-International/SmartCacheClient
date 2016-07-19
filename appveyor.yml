@@ -39,6 +39,7 @@ build_script:
 
 test_script:
 - dotnet test test/SmartCacheClient.UnitTests/project.json --configuration Release --no-build
+- dotnet test test/SmartCacheClient.IntegrationTests/project.json --configuration Release --no-build
 
 #---------------------------------#
 #      artifacts configuration    #
@@ -56,4 +57,4 @@ deploy:
   api_key:
     secure: OPXvDIu5JxGdU/PmLD7IFEkBJ342pugl8CNZDHNYYqqdiZCfaASFJ5LCCpncfqG+
   skip_symbols: false
-  artifact: src/**/*.nupkg
+  artifact: /.*\.nupkg/
