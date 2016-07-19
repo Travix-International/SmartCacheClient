@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Security.Cryptography.X509Certificates;
 
-namespace SmartCacheClient.Dotnet
+namespace SmartCache.Client.Certificates
 {
     public interface IClientCertificateProvider
     {

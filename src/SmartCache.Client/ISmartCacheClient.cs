@@ -2,7 +2,7 @@
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace SmartCacheClient.Dotnet
+namespace SmartCache.Client
 {
     /// <summary>
     /// Http client that caches deserialized responses per full url and uses the max-age response header as cache duration

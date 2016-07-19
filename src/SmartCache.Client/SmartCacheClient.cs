@@ -2,20 +2,25 @@
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using Microsoft.Extensions.Caching.Memory;
 using System.Threading;
 using System.Threading.Tasks;
 using JitterMagic;
+using Microsoft.Extensions.Caching.Memory;
+using SmartCache.Client.Certificates;
+using SmartCache.Client.Http;
 
-namespace SmartCacheClient.Dotnet
+namespace SmartCache.Client
 {
     /// <inheritdoc/>
     public class SmartCacheClient : ISmartCacheClient
     {
         private readonly IClientCertificateProvider clientCertificateProvider;
 
-        public SmartCacheClient(IClientCertificateProvider clientCertificateProvider)
+        private readonly IHttpClientFactory httpClientFactory;
+
+        public SmartCacheClient(IHttpClientFactory httpClientFactory, IClientCertificateProvider clientCertificateProvider)
         {
+            this.httpClientFactory = httpClientFactory;
             this.clientCertificateProvider = clientCertificateProvider;
         }
 
@@ -73,14 +78,14 @@ namespace SmartCacheClient.Dotnet
         private async Task<T> GetItemFromResponse<T>(HttpResponseMessage response) where T : class
         {
             // set item to null if 404/500 or content is null
-            T item = (response.StatusCode == HttpStatusCode.OK || response.StatusCode == HttpStatusCode.NotFound) && response.Content != null
+            T item = response.StatusCode == HttpStatusCode.OK && response.Content != null
                 ? await response.Content.ReadAsAsync<T>()
                 : null;
 
             return item;
         }
 
-        private async Task<HttpResponseMessage> GetResponseAsync(HttpClient httpClient, Uri uri, CancellationTokenSource cancellationTokenSource)
+        private async Task<HttpResponseMessage> GetResponseAsync(IHttpClient httpClient, Uri uri, CancellationTokenSource cancellationTokenSource)
         {
             return cancellationTokenSource != null
                 ? await httpClient.GetAsync(uri, cancellationTokenSource.Token)
@@ -89,18 +94,18 @@ namespace SmartCacheClient.Dotnet
 
         private TimeSpan GetCacheDurationFromResponse(HttpResponseMessage response)
         {
-            var maxAge = response.Headers.CacheControl.MaxAge;
+            var maxAge = response.Headers.CacheControl?.MaxAge;
 
             return maxAge ?? TimeSpan.FromSeconds(Jitter.Apply(60));
         }
 
-        private HttpClient CreateHttpClient()
+        private IHttpClient CreateHttpClient()
         {
             var handler = new HttpClientHandler();
 
             handler.ClientCertificates.AddRange(clientCertificateProvider.GetCertificates().ToArray());
 
-            return new HttpClient(handler);
+            return httpClientFactory.Create(handler);
         }
     }
 }

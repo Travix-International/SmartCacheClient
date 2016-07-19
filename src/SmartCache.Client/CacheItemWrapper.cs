@@ -1,6 +1,6 @@
 using System;
 
-namespace SmartCacheClient.Dotnet
+namespace SmartCache.Client
 {
     /// <summary>
     /// Internal wrapper in order to allow to store null values in cache

@@ -6,8 +6,8 @@
   </PropertyGroup>
   <Import Project="$(VSToolsPath)\DotNet\Microsoft.DotNet.Props" Condition="'$(VSToolsPath)' != ''" />
   <PropertyGroup Label="Globals">
-    <ProjectGuid>7359f00b-d505-46ad-b913-55f5edb81098</ProjectGuid>
-    <RootNamespace>SmartCacheClient.IntegrationTests</RootNamespace>
+    <ProjectGuid>7c6bb63d-e4eb-440e-916f-2dba09d0c4e1</ProjectGuid>
+    <RootNamespace>SmartCache.Client</RootNamespace>
     <BaseIntermediateOutputPath Condition="'$(BaseIntermediateOutputPath)'=='' ">.\obj</BaseIntermediateOutputPath>
     <OutputPath Condition="'$(OutputPath)'=='' ">.\bin\</OutputPath>
   </PropertyGroup>
