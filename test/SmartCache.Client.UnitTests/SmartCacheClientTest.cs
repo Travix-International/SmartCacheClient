@@ -15,16 +15,16 @@ namespace SmartCache.Client.UnitTests
 {
     public class SmartCacheClientTest
     {
-        private readonly Mock<IHttpClientFactory> httpClientFactory;
+        private readonly Mock<IHttpClientBuilder> httpClientBuilder;
 
         private readonly Mock<IHttpClient> httpClient;
 
         public SmartCacheClientTest()
         {
-            httpClientFactory = new Mock<IHttpClientFactory>();
+            httpClientBuilder = new Mock<IHttpClientBuilder>();
             httpClient = new Mock<IHttpClient>();
 
-            httpClientFactory.Setup(h => h.Create()).Returns(httpClient.Object);
+            httpClientBuilder.Setup(h => h.Build()).Returns(httpClient.Object);
         }
         
         [Fact]
@@ -37,7 +37,7 @@ namespace SmartCache.Client.UnitTests
                 Content = new StringContent("{ \"userId\": 2, \"id\": 3, \"title\": \"TestTitle\", \"body\": \"TestBody\" }", Encoding.UTF8, "application/json")
             });
 
-            var sut = new SmartCacheClient(httpClientFactory.Object);
+            var sut = new SmartCacheClient(httpClientBuilder.Object);
 
             // Act
             var result = await sut.GetAsync<Post>(uri);
@@ -57,7 +57,7 @@ namespace SmartCache.Client.UnitTests
             var uri = new Uri("http://example.com/smartcache/post/2");
             httpClient.Setup(h => h.GetAsync(uri)).ReturnsAsync(new HttpResponseMessage(HttpStatusCode.NotFound));
 
-            var sut = new SmartCacheClient(httpClientFactory.Object);
+            var sut = new SmartCacheClient(httpClientBuilder.Object);
 
             var result = await sut.GetAsync<Post>(uri);
 

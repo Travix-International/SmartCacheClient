@@ -12,11 +12,11 @@ namespace SmartCache.Client
     /// <inheritdoc/>
     public class SmartCacheClient : ISmartCacheClient
     {
-        private readonly IHttpClientFactory httpClientFactory;
+        private readonly IHttpClientBuilder httpClientBuilder;
 
-        public SmartCacheClient(IHttpClientFactory httpClientFactory)
+        public SmartCacheClient(IHttpClientBuilder httpClientBuilder)
         {
-            this.httpClientFactory = httpClientFactory;
+            this.httpClientBuilder = httpClientBuilder;
         }
 
         public async Task<T> GetAsync<T>(Uri uri, CancellationTokenSource cancellationTokenSource = null) where T : class
@@ -96,7 +96,7 @@ namespace SmartCache.Client
 
         private IHttpClient CreateHttpClient()
         {
-            return httpClientFactory.Create();
+            return httpClientBuilder.Build();
         }
     }
 }

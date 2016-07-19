@@ -11,7 +11,7 @@ namespace SmartCache.Client.IntegrationTests
         [Fact]
         public async Task GetAsync_CallJsonApiSuccessfully_DeserializedObjectReturned()
         {
-            var sut = new SmartCacheClient(new SmartCacheHttpClientFactory(new EmptyClientCertProvider()));
+            var sut = new SmartCacheClient(new SmartCacheHttpClientBuilder(new EmptyClientCertProvider(), new SmartCacheHttpClientFactory()));
 
             var result = await sut.GetAsync<Post>(new Uri("https://jsonplaceholder.typicode.com/posts/3"));
 
@@ -22,7 +22,7 @@ namespace SmartCache.Client.IntegrationTests
         [Fact]
         public async Task GetAsync_CallNotFoundUrl_NullReturned()
         {
-            var sut = new SmartCacheClient(new SmartCacheHttpClientFactory(new EmptyClientCertProvider()));
+            var sut = new SmartCacheClient(new SmartCacheHttpClientBuilder(new EmptyClientCertProvider(), new SmartCacheHttpClientFactory()));
 
             var result = await sut.GetAsync<Post>(new Uri("https://jsonplaceholder.typicode.com/posts/doesntexist"));
 
