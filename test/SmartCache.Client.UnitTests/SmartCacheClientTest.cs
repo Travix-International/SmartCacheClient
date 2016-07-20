@@ -50,6 +50,30 @@ namespace SmartCache.Client.UnitTests
             Assert.Equal("TestTitle", result.Title);
             Assert.Equal("TestBody", result.Body);
         }
+        
+        [Fact]
+        public async Task GetAsync_ResponseIsHalPlusJson_ContentSuccessfullyDeserialized()
+        {
+            // Arrange
+            var uri = new Uri("http://example.com/smartcache/post/3");
+            httpClient.Setup(h => h.GetAsync(uri)).ReturnsAsync(new HttpResponseMessage(HttpStatusCode.OK)
+            {
+                Content = new StringContent("{ \"userId\": 2, \"id\": 3, \"title\": \"TestTitle\", \"body\": \"TestBody\" }", Encoding.UTF8, "application/hal+json")
+            });
+
+            var sut = new SmartCacheClient(httpClientBuilder.Object);
+
+            // Act
+            var result = await sut.GetAsync<Post>(uri);
+
+            // Assert
+            Assert.NotNull(result);
+
+            Assert.Equal(2, result.UserId);
+            Assert.Equal(3, result.Id);
+            Assert.Equal("TestTitle", result.Title);
+            Assert.Equal("TestBody", result.Body);
+        }
 
         [Fact]
         public async Task GetAsync_404HttpResponse_NullReturned()

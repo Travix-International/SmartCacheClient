@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 using JitterMagic;
 using Microsoft.Extensions.Caching.Memory;
 using SmartCache.Client.Http;
+using System.Net.Http.Formatting;
+using System.Net.Http.Headers;
+using System.Collections.Generic;
 
 namespace SmartCache.Client
 {
@@ -13,10 +16,14 @@ namespace SmartCache.Client
     public class SmartCacheClient : ISmartCacheClient
     {
         private readonly IHttpClientBuilder httpClientBuilder;
+        private readonly MediaTypeFormatter halPlusJsonFormatter;
 
         public SmartCacheClient(IHttpClientBuilder httpClientBuilder)
         {
             this.httpClientBuilder = httpClientBuilder;
+
+            halPlusJsonFormatter = new JsonMediaTypeFormatter();
+            halPlusJsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/hal+json"));
         }
 
         public async Task<T> GetAsync<T>(Uri uri, CancellationTokenSource cancellationTokenSource = null) where T : class
@@ -74,7 +81,7 @@ namespace SmartCache.Client
         {
             // set item to null if 404/500 or content is null
             T item = response.StatusCode == HttpStatusCode.OK && response.Content != null
-                ? await response.Content.ReadAsAsync<T>()
+                ? await response.Content.ReadAsAsync<T>(new List<MediaTypeFormatter> { halPlusJsonFormatter })
                 : null;
 
             return item;
