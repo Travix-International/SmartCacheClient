@@ -13,7 +13,7 @@ namespace SmartCache.Client.Certificates
 
         public ClientCertificateProvider(IConfiguration configuration, ILogger<ClientCertificateProvider> logger)
         {
-            logger.LogInformation("Initializing ClentCertificateProvider.");
+            logger.LogInformation("Initializing ClientCertificateProvider.");
 
             var certPath = configuration["SmartCacheClient:ClientCertificateFilePath"];
 

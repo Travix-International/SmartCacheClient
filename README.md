@@ -5,8 +5,8 @@ This serves as a base implementation for any client to our internal services.
 It caches results per called url based on the max-age header outputted by the original service call. 
 And it wraps the result so it can store null values.
 
-[![Build Status .NET](https://ci.appveyor.com/api/projects/status/github/Travix-International/SmartCacheClient?svg=true)](https://ci.appveyor.com/project/JSalverda/smartcacheclient/)
-[![Version](https://img.shields.io/nuget/v/SmartCacheClient.svg)](https://www.nuget.org/packages/SmartCacheClient)
+[![Build status](https://ci.appveyor.com/api/projects/status/b9o8fhtnwjda845m?svg=true)](https://ci.appveyor.com/project/JSalverda/smartcacheclient)
+[![Version](https://img.shields.io/nuget/v/SmartCache.Client.svg)](https://www.nuget.org/packages/SmartCache.Client/)
 [![License](https://img.shields.io/github/license/Travix-International/SmartCacheClient.svg)](https://github.com/Travix-International/SmartCacheClient/blob/master/LICENSE)
 
 Usage
@@ -41,3 +41,8 @@ In order to reduce customer requests waiting for internal subsystems the cached 
 For frequently used values this will make sure it always comes from cache but is refreshed regularly as well.
 
 Until this is implemented it's actually not very smart :)
+
+
+## License
+
+MIT © [Travix International](http://travix.com)
