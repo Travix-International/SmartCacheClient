@@ -20,16 +20,6 @@ namespace SmartCache.Client.IntegrationTests
         }
 
         [Fact]
-        public async Task ConfigApiHalJsonTest()
-        {
-            var sut = new SmartCacheClient(new SmartCacheHttpClientBuilder(new EmptyClientCertProvider(), new SmartCacheHttpClientFactory()));
-
-            var result = await sut.GetAsync<string>(new Uri("http://configurationapi.travix.com/Setting/DefaultLanguageCode/CheapticketsBE"));
-
-            Assert.NotNull(result);
-        }
-
-        [Fact]
         public async Task GetAsync_CallNotFoundUrl_NullReturned()
         {
             var sut = new SmartCacheClient(new SmartCacheHttpClientBuilder(new EmptyClientCertProvider(), new SmartCacheHttpClientFactory()));
