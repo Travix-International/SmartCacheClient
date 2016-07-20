@@ -1,5 +1,5 @@
 {
-  "version": "1.0.2",
+  "version": "1.0.3",
 
   "buildOptions": {
     "warningsAsErrors": true
@@ -19,7 +19,7 @@
     "Microsoft.Extensions.Logging.Abstractions": "1.0.0",
     "Microsoft.Extensions.Logging": "1.0.0",
     "System.Diagnostics.TraceSource": "4.0.0",
-    "SmartCache.Client": "1.0.2"
+    "SmartCache.Client": "1.0.3"
   },
 
   "frameworks": {
