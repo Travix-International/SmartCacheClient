@@ -19,20 +19,27 @@ namespace SmartCache.Client.Certificates
 
             try
             {
-                if (!String.IsNullOrEmpty(certPath) && File.Exists(certPath))
+                if (String.IsNullOrEmpty(certPath))
                 {
-                    cachedCertificate = new X509Certificate2(File.ReadAllBytes(certPath), configuration["SmartCacheClient:ClientCertificatePassword"]);
-
-                    logger.LogInformation("Certificate processed successfully");
-                    logger.LogInformation($"Subject: {cachedCertificate.Subject}");
-                    logger.LogInformation($"FriendlyName: {cachedCertificate.FriendlyName}");
-                    logger.LogInformation($"IssuerName: {cachedCertificate.IssuerName}");
-                    logger.LogInformation($"HasPrivateKey: {cachedCertificate.HasPrivateKey}");
+                    logger.LogInformation("Certificate file path was not configured.");
+                    return;
                 }
-                else
+
+                logger.LogInformation($"Trying to load certificate from {certPath}");
+
+                if (!File.Exists(certPath))
                 {
                     logger.LogInformation("The certificate file was not found.");
+                    return;
                 }
+
+                cachedCertificate = new X509Certificate2(File.ReadAllBytes(certPath), configuration["SmartCacheClient:ClientCertificatePassword"]);
+
+                logger.LogInformation("Certificate processed successfully");
+                logger.LogInformation($"Subject: {cachedCertificate.Subject}");
+                logger.LogInformation($"FriendlyName: {cachedCertificate.FriendlyName}");
+                logger.LogInformation($"IssuerName: {cachedCertificate.IssuerName}");
+                logger.LogInformation($"HasPrivateKey: {cachedCertificate.HasPrivateKey}");
             }
             catch (Exception ex)
             {
