@@ -30,16 +30,16 @@ configuration: Release
 build_script:
 - dotnet --info
 - dotnet restore --no-cache
-- dotnet build **/project.json --configuration Release --version-suffix %APPVEYOR_BUILD_NUMBER%
-- dotnet pack src/SmartCache.Client/project.json --configuration Release --no-build
+- dotnet build --configuration Release --version-suffix %APPVEYOR_BUILD_NUMBER%
+- dotnet pack src/SmartCache.Client/SmartCache.Client.csproj --configuration Release --no-build
 
 #---------------------------------#
 #       tests configuration       #
 #---------------------------------#
 
 test_script:
-- dotnet test test/SmartCache.Client.UnitTests/project.json --configuration Release --no-build
-- dotnet test test/SmartCache.Client.IntegrationTests/project.json --configuration Release --no-build
+- dotnet test test/SmartCache.Client.UnitTests/SmartCache.Client.UnitTests.csproj --configuration Release --no-build
+- dotnet test test/SmartCache.Client.IntegrationTests/SmartCache.Client.IntegrationTests.csproj --configuration Release --no-build
 
 #---------------------------------#
 #      artifacts configuration    #
