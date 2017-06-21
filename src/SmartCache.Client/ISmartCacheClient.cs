@@ -16,6 +16,6 @@ namespace SmartCache.Client
         /// <param name="uri"></param>
         /// <param name="cancellationTokenSource"></param>
         /// <returns></returns>
-        Task<T> GetAsync<T>(Uri uri, CancellationTokenSource cancellationTokenSource = null) where T : class;
+        Task<T> GetAsync<T>(Uri uri, CancellationTokenSource cancellationTokenSource = null);
     }
 }

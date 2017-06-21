@@ -26,12 +26,12 @@ namespace SmartCache.Client
             halPlusJsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/hal+json"));
         }
 
-        public async Task<T> GetAsync<T>(Uri uri, CancellationTokenSource cancellationTokenSource = null) where T : class
+        public async Task<T> GetAsync<T>(Uri uri, CancellationTokenSource cancellationTokenSource = null)
         {
             return await GetFromCacheOrSource(uri, () => GetResponseItemAndCacheDuration<T>(uri, cancellationTokenSource));
         }
         
-        private async Task<T> GetFromCacheOrSource<T>(Uri uri, Func<Task<Tuple<T, TimeSpan>>> functionIfCacheMiss) where T : class
+        private async Task<T> GetFromCacheOrSource<T>(Uri uri, Func<Task<Tuple<T, TimeSpan>>> functionIfCacheMiss)
         {
             string key = uri.AbsoluteUri;
 
@@ -64,7 +64,7 @@ namespace SmartCache.Client
             return wrappedItem.Value;
         }
 
-        private async Task<Tuple<T, TimeSpan>> GetResponseItemAndCacheDuration<T>(Uri uri, CancellationTokenSource cancellationTokenSource) where T : class
+        private async Task<Tuple<T, TimeSpan>> GetResponseItemAndCacheDuration<T>(Uri uri, CancellationTokenSource cancellationTokenSource)
         {
             using (var httpClient = CreateHttpClient())
             {
@@ -77,12 +77,12 @@ namespace SmartCache.Client
             }
         }
 
-        private async Task<T> GetItemFromResponse<T>(HttpResponseMessage response) where T : class
+        private async Task<T> GetItemFromResponse<T>(HttpResponseMessage response)
         {
             // set item to null if 404/500 or content is null
             T item = response.StatusCode == HttpStatusCode.OK && response.Content != null
                 ? await response.Content.ReadAsAsync<T>(new List<MediaTypeFormatter> { halPlusJsonFormatter })
-                : null;
+                : default(T);
 
             return item;
         }
