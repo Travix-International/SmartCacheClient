@@ -6,7 +6,7 @@ namespace SmartCache.Client
     /// Internal wrapper in order to allow to store null values in cache
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    internal class CacheItemWrapper<T> where T : class
+    internal class CacheItemWrapper<T>
     {
         public T Value { get; private set; }
 
