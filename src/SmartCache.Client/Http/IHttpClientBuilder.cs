@@ -2,6 +2,6 @@
 {
     public interface IHttpClientBuilder
     {
-        IHttpClient HttpClient { get; }
+        IHttpClient Build();
     }
 }

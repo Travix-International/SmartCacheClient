@@ -17,10 +17,12 @@ namespace SmartCache.Client
     {
         private readonly IHttpClientBuilder httpClientBuilder;
         private readonly MediaTypeFormatter halPlusJsonFormatter;
+        private readonly IHttpClient httpClient;
 
         public SmartCacheClient(IHttpClientBuilder httpClientBuilder)
         {
             this.httpClientBuilder = httpClientBuilder;
+            httpClient = httpClientBuilder.Build();
 
             halPlusJsonFormatter = new JsonMediaTypeFormatter();
             halPlusJsonFormatter.SupportedMediaTypes.Add(new MediaTypeHeaderValue("application/hal+json"));
@@ -87,8 +89,8 @@ namespace SmartCache.Client
         private async Task<HttpResponseMessage> GetResponseAsync(Uri uri, CancellationTokenSource cancellationTokenSource)
         {
             return cancellationTokenSource != null
-                ? await httpClientBuilder.HttpClient.GetAsync(uri, cancellationTokenSource.Token)
-                : await httpClientBuilder.HttpClient.GetAsync(uri);
+                ? await httpClient.GetAsync(uri, cancellationTokenSource.Token)
+                : await httpClient.GetAsync(uri);
         }
 
         private TimeSpan GetCacheDurationFromResponse(HttpResponseMessage response)
@@ -96,6 +98,14 @@ namespace SmartCache.Client
             var maxAge = response.Headers.CacheControl?.MaxAge;
 
             return maxAge ?? TimeSpan.FromSeconds(Jitter.Apply(60));
+        }
+
+        public void Dispose()
+        {
+            if (httpClient != null)
+            {
+                httpClient.Dispose();
+            }
         }
     }
 }

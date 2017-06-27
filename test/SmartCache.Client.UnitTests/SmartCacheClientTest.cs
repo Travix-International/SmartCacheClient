@@ -24,7 +24,7 @@ namespace SmartCache.Client.UnitTests
             httpClientBuilder = new Mock<IHttpClientBuilder>();
             httpClient = new Mock<IHttpClient>();
 
-            httpClientBuilder.SetupGet(h => h.HttpClient).Returns(httpClient.Object);
+            httpClientBuilder.Setup(h => h.Build()).Returns(httpClient.Object);
         }
         
         [Fact]

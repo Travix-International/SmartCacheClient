@@ -21,7 +21,7 @@ namespace SmartCache.Client.UnitTests
         }
 
         [Fact]
-        public void GetHttpClient_NoCertificatesProvided_NoCertificateAddedToTheHandler()
+        public void Build_NoCertificatesProvided_NoCertificateAddedToTheHandler()
         {
             clientCertificateProvider
                 .Setup(c => c.GetCertificates())
@@ -29,14 +29,14 @@ namespace SmartCache.Client.UnitTests
 
             var sut = new SmartCacheHttpClientBuilder(clientCertificateProvider.Object, httpClientFactory.Object);
 
-            var result = sut.HttpClient;
+            var result = sut.Build();
 
             httpClientFactory.Verify(
                 factory => factory.Create(It.Is<HttpClientHandler>(handler => handler.ClientCertificates.Count == 0)));
         }
 
         [Fact]
-        public void GetHttpClient_TwoCertificatesProvided_TwoCertificateAddedToTheHandler()
+        public void Build_TwoCertificatesProvided_TwoCertificateAddedToTheHandler()
         {
             clientCertificateProvider
                 .Setup(c => c.GetCertificates())
@@ -48,7 +48,7 @@ namespace SmartCache.Client.UnitTests
 
             var sut = new SmartCacheHttpClientBuilder(clientCertificateProvider.Object, httpClientFactory.Object);
 
-            var result = sut.HttpClient;
+            var result = sut.Build();
 
             httpClientFactory.Verify(
                 factory => factory.Create(It.Is<HttpClientHandler>(handler => handler.ClientCertificates.Count == 2)));

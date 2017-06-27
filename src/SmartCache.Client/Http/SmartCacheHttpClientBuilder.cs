@@ -17,11 +17,9 @@ namespace SmartCache.Client.Http
         {
             this.clientCertificateProvider = clientCertificateProvider;
             this.httpClientFactory = httpClientFactory;
-
-            HttpClient = Build();
         }
 
-        private IHttpClient Build()
+        public IHttpClient Build()
         {
             var handler = new HttpClientHandler();
 
