@@ -66,15 +66,12 @@ namespace SmartCache.Client
 
         private async Task<Tuple<T, TimeSpan>> GetResponseItemAndCacheDuration<T>(Uri uri, CancellationTokenSource cancellationTokenSource)
         {
-            using (var httpClient = CreateHttpClient())
-            {
-                HttpResponseMessage response = await GetResponseAsync(httpClient, uri, cancellationTokenSource);
+            HttpResponseMessage response = await GetResponseAsync(uri, cancellationTokenSource);
 
-                T value = await GetItemFromResponse<T>(response);
+            T value = await GetItemFromResponse<T>(response);
 
-                TimeSpan cacheDuration = GetCacheDurationFromResponse(response);
-                return new Tuple<T, TimeSpan>(value, cacheDuration);
-            }
+            TimeSpan cacheDuration = GetCacheDurationFromResponse(response);
+            return new Tuple<T, TimeSpan>(value, cacheDuration);
         }
 
         private async Task<T> GetItemFromResponse<T>(HttpResponseMessage response)
@@ -87,11 +84,11 @@ namespace SmartCache.Client
             return item;
         }
 
-        private async Task<HttpResponseMessage> GetResponseAsync(IHttpClient httpClient, Uri uri, CancellationTokenSource cancellationTokenSource)
+        private async Task<HttpResponseMessage> GetResponseAsync(Uri uri, CancellationTokenSource cancellationTokenSource)
         {
             return cancellationTokenSource != null
-                ? await httpClient.GetAsync(uri, cancellationTokenSource.Token)
-                : await httpClient.GetAsync(uri);
+                ? await httpClientBuilder.HttpClient.GetAsync(uri, cancellationTokenSource.Token)
+                : await httpClientBuilder.HttpClient.GetAsync(uri);
         }
 
         private TimeSpan GetCacheDurationFromResponse(HttpResponseMessage response)
@@ -99,11 +96,6 @@ namespace SmartCache.Client
             var maxAge = response.Headers.CacheControl?.MaxAge;
 
             return maxAge ?? TimeSpan.FromSeconds(Jitter.Apply(60));
-        }
-
-        private IHttpClient CreateHttpClient()
-        {
-            return httpClientBuilder.Build();
         }
     }
 }
