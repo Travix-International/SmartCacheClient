@@ -7,7 +7,7 @@ namespace SmartCache.Client
     /// <summary>
     /// Http client that caches deserialized responses per full url and uses the max-age response header as cache duration
     /// </summary>
-    public interface ISmartCacheClient
+    public interface ISmartCacheClient : IDisposable
     {
         /// <summary>
         /// Retrieve an item of type T from cache or uri
