@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
 using Xunit;
-using SmartCache.Client;
 using SmartCache.Client.Http;
 
 namespace SmartCache.Client.IntegrationTests
