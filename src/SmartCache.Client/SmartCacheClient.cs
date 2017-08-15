@@ -33,24 +33,24 @@ namespace SmartCache.Client
 
             if (string.IsNullOrWhiteSpace(key))
             {
-                (T item, TimeSpan _) = await functionIfCacheMiss.Invoke();
+                var (value, _) = await functionIfCacheMiss.Invoke();
 
-                return item;
+                return value;
             }
 
             var wrappedItem = MemoryCacheExtensions.Default.Get(key) as CacheItemWrapper<T>;
 
             if (wrappedItem == null)
             {
-                (T item, TimeSpan cacheDuration) = await functionIfCacheMiss.Invoke();
+                var (value, cacheDuration) = await functionIfCacheMiss.Invoke();
 
                 if (cacheDuration.TotalSeconds <= 0)
                 {
                     // don't cache, so return the object immediately
-                    return item;
+                    return value;
                 }
 
-                wrappedItem = new CacheItemWrapper<T>(item, cacheDuration);
+                wrappedItem = new CacheItemWrapper<T>(value, cacheDuration);
 
                 var options = new MemoryCacheEntryOptions { AbsoluteExpiration = DateTime.UtcNow.Add(cacheDuration) };
 
