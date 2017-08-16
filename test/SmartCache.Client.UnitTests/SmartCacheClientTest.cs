@@ -1,14 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Net;
 using System.Net.Http;
-using System.Security.Cryptography.X509Certificates;
 using System.Text;
 using System.Threading.Tasks;
 using Moq;
 using Xunit;
-using SmartCache.Client;
-using SmartCache.Client.Certificates;
 using SmartCache.Client.Http;
 
 namespace SmartCache.Client.UnitTests

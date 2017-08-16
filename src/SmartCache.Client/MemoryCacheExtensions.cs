@@ -8,12 +8,6 @@ namespace SmartCache.Client
         private static readonly Lazy<MemoryCache> lazy = new Lazy<MemoryCache>(
             () => new MemoryCache(new MemoryCacheOptions()));
 
-        public static MemoryCache Default
-        {
-            get
-            {
-                return lazy.Value;
-            }
-        }
+        public static MemoryCache Default => lazy.Value;
     }
 }
