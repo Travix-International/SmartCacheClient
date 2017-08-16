@@ -7,6 +7,7 @@ using JitterMagic;
 using Microsoft.Extensions.Caching.Memory;
 using Newtonsoft.Json;
 using SmartCache.Client.Http;
+using System.IO;
 
 namespace SmartCache.Client
 {
@@ -15,6 +16,7 @@ namespace SmartCache.Client
     {
         private readonly IHttpClientBuilder httpClientBuilder;
         private readonly IHttpClient httpClient;
+        private readonly JsonSerializer jsonSerializer = new JsonSerializer();
 
         public SmartCacheClient(IHttpClientBuilder httpClientBuilder)
         {
@@ -72,12 +74,20 @@ namespace SmartCache.Client
 
         private async Task<T> GetItemFromResponse<T>(HttpResponseMessage response)
         {
-            // set item to null if 404/500 or content is null
-            T item = response.StatusCode == HttpStatusCode.OK && response.Content != null
-                ? JsonConvert.DeserializeObject<T>(await response.Content.ReadAsStringAsync())
-                : default(T);
-
-            return item;
+            if (response.StatusCode == HttpStatusCode.OK && response.Content != null)
+            {
+                using (var stream = await response.Content.ReadAsStreamAsync())
+                using (var streamReader = new StreamReader(stream))
+                using (var jsonReader = new JsonTextReader(streamReader))
+                {
+                    return jsonSerializer.Deserialize<T>(jsonReader);
+                }
+            }
+            else
+            {
+                // set item to null if 404/500 or content is null
+                return default(T);
+            }
         }
 
         private async Task<HttpResponseMessage> GetResponseAsync(Uri uri, CancellationTokenSource cancellationTokenSource)
