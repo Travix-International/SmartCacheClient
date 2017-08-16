@@ -1,13 +1,13 @@
-﻿using System;
+﻿using JitterMagic;
+using Microsoft.Extensions.Caching.Memory;
+using Newtonsoft.Json;
+using SmartCache.Client.Http;
+using System;
+using System.IO;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using JitterMagic;
-using Microsoft.Extensions.Caching.Memory;
-using Newtonsoft.Json;
-using SmartCache.Client.Http;
-using System.IO;
 
 namespace SmartCache.Client
 {
