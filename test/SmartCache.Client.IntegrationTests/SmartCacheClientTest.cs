@@ -27,5 +27,21 @@ namespace SmartCache.Client.IntegrationTests
 
             Assert.Equal(null, result);
         }
+
+        [Fact]
+        public async Task GetAsync_CallJApiWithCustomHttpClientFactoryAndDelegatingHandler_ShouldUseTheCustomDeletagatingHandler()
+        {
+            var delegatingHandlerUsed = false;
+
+            Action delegatingHandlerCallBack = () => { delegatingHandlerUsed = true; };
+
+            var sut = new SmartCacheClient(new SmartCacheHttpClientBuilder(new EmptyClientCertProvider(), new CustomSmartCacheHttpClientFactory(delegatingHandlerCallBack)));
+
+            var result = await sut.GetAsync<Post>(new Uri("https://jsonplaceholder.typicode.com/posts/3"));
+
+            Assert.NotNull(result);
+            Assert.Equal(3, result.Id);
+            Assert.True(delegatingHandlerUsed);
+        }
     }
 }
