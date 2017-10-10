@@ -29,7 +29,7 @@ namespace SmartCache.Client.IntegrationTests
         }
 
         [Fact]
-        public async Task GetAsync_CallJApiWithCustomHttpClientFactoryAndDelegatingHandler_ShouldUseTheCustomDeletagatingHandler()
+        public async Task GetAsync_CallApiWithCustomHttpClientFactoryAndDelegatingHandler_ShouldUseTheCustomDeletagatingHandler()
         {
             var delegatingHandlerUsed = false;
 
