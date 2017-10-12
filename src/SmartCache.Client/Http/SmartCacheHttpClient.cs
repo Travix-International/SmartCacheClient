@@ -9,7 +9,7 @@ namespace SmartCache.Client.Http
     {
         private readonly HttpClient client;
 
-        public SmartCacheHttpClient(HttpClientHandler handler)
+        public SmartCacheHttpClient(HttpMessageHandler handler)
         {
             client = new HttpClient(handler);
         }
